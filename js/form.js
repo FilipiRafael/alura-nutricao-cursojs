@@ -13,20 +13,13 @@ addButton.addEventListener('click', (event) => {
 
     table = document.querySelector('#tabela-pacientes');
 
-    // if (paciente.nome === '' || paciente.peso === '' || paciente.altura === ''|| paciente.gordura === '') {
-    //     alert('Nenhum campo pode ser vazio!');
-    // } else {
-    //     if (paciente.peso <= 0 || paciente.peso >= 300) {
-    //         pacienteTr.addPacientePeso.textContent = 'Peso inválido!';
-    //         console.error(`O peso ${paciente.peso} é inválido. Será necessário atualizar.`)
-    //         pacienteTr.addPacienteRow.classList.add('campo-invalido');
-    //     } if (paciente.altura >= 3 || paciente.altura <= 0) {
-    //         pacienteTr.addPacienteAltura.textContent = 'Altura inválida';
-    //         console.error(`A altura ${paciente.altura} é inválida. Será necessário atualizar.`)
-    //         pacienteTr.addPacienteRow.classList.add('campo-invalido');
-    //     }
-    //     table.appendChild(pacienteTr);
-    // }
+    let error = validaPaciente(paciente);
+
+    if (error.length > 0) {
+        let errorMessage = document.querySelector('#mensagem-erro');
+        errorMessage.textContent = error;
+        return;
+    }
 
     table.appendChild(pacienteTr);
     form.reset();
@@ -77,3 +70,18 @@ function montaTr(paciente) {
 
     return addPacienteRow;
 }
+
+function validaPaciente(paciente) {
+    if (validaPeso(paciente.peso) && validaAltura(paciente.altura)) {
+        return ''
+    } else {
+        if (!validaAltura(paciente.altura) && !validaPeso(paciente.peso)) {
+            return 'Campos de peso e altura inválidos';
+        } else if (!validaAltura(paciente.altura)) {
+            return 'Altura inválida';
+        } else if (!validaPeso(paciente.peso)) {
+            return 'Peso inválido';
+        }
+    }
+} 
+
